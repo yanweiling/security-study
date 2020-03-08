@@ -12,4 +12,6 @@ public class AdminTestController {
     public String productInfo(){
         return " admin home page ";
     }
+
+
 }

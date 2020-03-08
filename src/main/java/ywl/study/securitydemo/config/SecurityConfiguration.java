@@ -13,6 +13,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ywl.study.securitydemo.service.CustomUserDetailsService;
+import ywl.study.securitydemo.util.TokenProvider;
 
 @Configuration
 @EnableWebSecurity
@@ -20,6 +21,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     CustomUserDetailsService userDetailsService;
+    @Autowired
+    TokenProvider tokenProvider;
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -32,6 +35,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/product/**").hasRole("USER")
                 .anyRequest().authenticated()
+                .and()
+                .apply(securityConfigurerAdapter())
                 .and()
                 .formLogin().and()
                 .httpBasic();
@@ -64,8 +69,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
+    // 增加方法
+    private MyAuthTokenConfigurer securityConfigurerAdapter() {
+        return new MyAuthTokenConfigurer(userDetailsService, tokenProvider);
+    }
+
     public static void main(String[] args) {
         BCryptPasswordEncoder encode=new BCryptPasswordEncoder();
         System.out.println(encode.encode("user1"));
     }
+
+
 }
