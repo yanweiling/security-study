@@ -40,6 +40,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin().and()
                 .httpBasic();
+
+         //如果采用token验证，那header请求一定要禁用缓存
+        http.headers().cacheControl();
     }
 
     /*增加了 管理员（admin1，密码admin1），以及普通用户（user1,密码user1）*/
