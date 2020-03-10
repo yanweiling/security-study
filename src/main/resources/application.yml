@@ -1,0 +1,16 @@
+#端口号
+server:
+  port: 8888
+  servlet:
+    context-path: /elst/
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/elst?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: 123456
+    driver: com.mysql.cj.jdbc.Driver
+#整合Mybatis
+mybatis:
+  type-aliases-package: ywl.study.securitydemo.entity
+  mapper-locations: classpath:mybatis/mapper/*.xml
+  config-location: classpath:mybatis/SqlSessionFactory.xml
