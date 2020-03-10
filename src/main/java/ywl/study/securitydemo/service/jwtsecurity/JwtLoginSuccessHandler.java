@@ -20,6 +20,7 @@ import java.io.IOException;
 public class JwtLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
+        System.out.println("JwtLoginSuccessHandler ....");
         response.setContentType("application/json;charset=UTF-8");
         JwtUserDetails jwtUserDetails = (JwtUserDetails) authentication.getPrincipal();
         String json = JSON.toJSONString(jwtUserDetails);

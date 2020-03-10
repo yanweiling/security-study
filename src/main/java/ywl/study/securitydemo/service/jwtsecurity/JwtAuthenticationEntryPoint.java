@@ -13,12 +13,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * 用户权限不足异常处理
+ * 用来解决匿名用户访问无权限资源时的异常
  */
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+        System.out.println("JwtAuthenticationEntryPoint.........");
         JsonResult<String> jsonResult = new JsonResult<>();
         jsonResult.setFail(JsonResponseStatus.NoRight.getCode(), "权限不足 :" + authException.getMessage());
         response.setContentType("application/json;charset=UTF-8");

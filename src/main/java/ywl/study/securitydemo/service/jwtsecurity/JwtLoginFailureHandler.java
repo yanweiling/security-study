@@ -21,6 +21,7 @@ import java.io.IOException;
 public class JwtLoginFailureHandler extends SimpleUrlAuthenticationFailureHandler {
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+        System.out.println("JwtLoginFailureHandler....");
         String msg = "登陆失败";
         if (exception instanceof BadCredentialsException ||
                 exception instanceof UsernameNotFoundException) {
