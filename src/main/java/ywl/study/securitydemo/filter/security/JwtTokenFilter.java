@@ -21,6 +21,36 @@ import java.io.IOException;
 
 /**
  * Token 有效性验证拦截器
+ * Claims格式
+ * {
+ * 	exp = 1583891988,
+ * 	userDetails = {
+ * 		"accountNonExpired": true,
+ * 		"accountNonLocked": true,
+ * 		"authorities": [{
+ * 			"authority": "1"
+ *                }, {
+ * 			"authority": "3"
+ *        }],
+ * 		"credentialsNonExpired": true,
+ * 		"enabled": true,
+ * 		"id": 1,
+ * 		"password": "$2a$10$NEsrNyBIPGELx9DpIbm/x.VwAMOzhmX4cOfO4jzwRJf6XizYrxjI2",
+ * 		"roles": [{
+ * 			"id": 1,
+ * 			"roleId": "1",
+ * 			"roleName": "admin"
+ *        }, {
+ * 			"id": 3,
+ * 			"roleId": "3",
+ * 			"roleName": "super"
+ *        }],
+ * 		"userEnabled": 1,
+ * 		"userId": "1",
+ * 		"userName": "zhangsan",
+ * 		"userPwd": "$2a$10$NEsrNyBIPGELx9DpIbm/x.VwAMOzhmX4cOfO4jzwRJf6XizYrxjI2",
+ * 		"username": "zhangsan"* 	}
+ * }
  */
 public class JwtTokenFilter extends OncePerRequestFilter {
     @Override
@@ -47,6 +77,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
            JwtLoginToken jwtLoginToken=new JwtLoginToken(user,"",user.getAuthorities());
            jwtLoginToken.setDetails(new WebAuthenticationDetails(httpServletRequest));
            SecurityContextHolder.getContext().setAuthentication(jwtLoginToken);
+           //token验证无误，继续校验是否有权限访问
            filterChain.doFilter(httpServletRequest,httpServletResponse);
 
        }catch (Exception e){
