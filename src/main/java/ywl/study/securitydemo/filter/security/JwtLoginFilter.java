@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * 用户登录验证拦截器--执行顺序在UsernamePasswordAuthenticationFilter 拦截器之后
+ * 用户登录验证拦截器--执行顺序在UsernamePasswordAuthenticationFilter 之前执行
  */
 public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
 

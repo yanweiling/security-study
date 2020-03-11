@@ -89,6 +89,7 @@ public class SpringWebSecurityConfig  extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .csrf().disable()
+                //jwtLoginFilter 执行完，执行UsernamePasswordAuthenticationFilter拦截器，执行后执行jwtTokenFilter
                 .addFilterAt(jwtLoginFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterAfter(jwtTokenFilter,JwtLoginFilter.class);
 
