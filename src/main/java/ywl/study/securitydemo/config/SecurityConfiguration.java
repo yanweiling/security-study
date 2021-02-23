@@ -9,6 +9,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import ywl.study.securitydemo.service.CustomUserDetailsService;
 
 @Configuration
@@ -17,13 +19,23 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     CustomUserDetailsService userDetailsService;
+//    @Autowired
+//    AuthenticationEntryPoint authenticationEntryPoint;
+
+    @Autowired
+    AccessDeniedHandler accessDeniedHandler;
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
+        http.exceptionHandling()
+//                .authenticationEntryPoint(authenticationEntryPoint)
+                .accessDeniedHandler(accessDeniedHandler);
+
         http
                 .authorizeRequests()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/product/**").hasRole("USER")
-                .anyRequest().authenticated()
+                .anyRequest().authenticated() //访问所有权限都需要登录
                 .and()
                 .formLogin().and()
                 .httpBasic();
