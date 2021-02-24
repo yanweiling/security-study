@@ -5,8 +5,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ywl.study.securitydemo.entity.security.JwtLoginToken;
+
+
 /**
  * 用户角色校验具体实现类
  */
@@ -35,9 +38,11 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
         defaultCheck(userDetails);
         // 用户名密码校验 具体逻辑
         additionalAuthenticationChecks(userDetails, jwtLoginToken);
+
         //构造已认证的authentication
         JwtLoginToken authenticatedToken=new JwtLoginToken(userDetails,jwtLoginToken.getCredentials(),userDetails.getAuthorities());
         authenticatedToken.setDetails(jwtLoginToken.getDetails());
+        //token中的detail保存的是用户的remoteIP和sessionid
         return authenticatedToken;
     }
 
@@ -53,6 +58,10 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
 
     /*一些默认信息的检查*/
     private void defaultCheck(UserDetails user){
+        if(user==null){
+            throw new UsernameNotFoundException("User account not exists");
+        }
+
         if(!user.isAccountNonLocked()){
             throw new LockedException("User account is locked");
         }
